@@ -1,0 +1,50 @@
+name: Deploy Static Site Infrastructure
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'infra/02-static-site-s3/**/*.tf'
+      - 'infra/02-static-site-s3/**/*.tfvars'
+      - 'infra/modules/s3/**'
+      - 'infra/modules/cloudfront/**'
+      - 'infra/modules/dns-subdomain/**'
+
+jobs:
+  terraform-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.11
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      
+      # Deploy to dev environment when pushing to dev branch
+      - name: Deploy S3 static site infrastructure (dev)
+        if: github.ref == 'refs/heads/dev'
+        working-directory: infra/02-static-site-s3/environments/dev
+        run: |
+          terraform init
+          terraform validate
+          terraform plan -out=tfplan
+      
+      # Deploy to prod environment when pushing to main branch
+      - name: Deploy S3 static site infrastructure (prod)
+        if: github.ref == 'refs/heads/main'
+        working-directory: infra/02-static-site-s3/environments/prod
+        run: |
+          terraform init
+          terraform validate
+          terraform plan -out=tfplan
