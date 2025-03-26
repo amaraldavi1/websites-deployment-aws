@@ -120,7 +120,15 @@ The project uses the following AWS services and components:
 
 ## Deploy using local Terraform CLI
 
-To run this project locally, follow these steps:
+#### To run this project locally, follow these steps:
+0. **Prepare AWS for Terraform state management**:
+   - Ensure you are logged into AWS CLI with appropriate permissions
+   - Run the pre-configuration script to create the S3 bucket and DynamoDB table for Terraform state:
+     ```
+     ./scripts/pre-config-aws.sh
+     ```
+   - This script sets up remote state storage and locking capabilities for Terraform
+   - This step is required only once before your first deployment
 
 1. **Set up the DNS Zone first**:
    - Navigate to the DNS zone directory:
