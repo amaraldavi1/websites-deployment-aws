@@ -179,6 +179,8 @@ This project utilizes GitHub Actions to automate the deployment of both dynamic 
 
 ## Improvements
 
+There's several things we can do for improving this project. Here are a few improvements that we can add as next steps:
+
 - Create tests for Terraform files with TFTest - https://developer.hashicorp.com/terraform/language/tests
 - Improve pipelines with test and security checks on the application builds.
 - Make use of OIDC for wiring GitHub and AWS account to improve security
