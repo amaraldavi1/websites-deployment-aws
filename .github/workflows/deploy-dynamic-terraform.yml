@@ -2,9 +2,8 @@ name: Deploy Dynamic Site Infrastructure
 
 on:
   push:
-    branches:
-      - main
-      - dev
+    tags:
+      - 'deploy*'
     paths:
       - 'infra/01-ecs-dynamic-site/**/*.tf'
       - 'infra/01-ecs-dynamic-site/**/*.tfvars'

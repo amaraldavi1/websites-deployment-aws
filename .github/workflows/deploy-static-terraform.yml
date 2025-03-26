@@ -2,9 +2,8 @@ name: Deploy Static Site Infrastructure
 
 on:
   push:
-    branches:
-      - main
-      - dev
+    tags:
+      - 'deploy*'
     paths:
       - 'infra/02-static-site-s3/**/*.tf'
       - 'infra/02-static-site-s3/**/*.tfvars'
